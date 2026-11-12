@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "landing-page-lab"
+version = "0.1.0"
+description = "Brief -> landing-page variants -> static previews -> PostHog experiment -> a readout that calls a winner only when the stats agree."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Will Mather" }]
+requires-python = ">=3.12"
+dependencies = ["PyYAML>=6"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+lpl = "landing_page_lab.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"landing_page_lab.site" = ["static/*"]
+"landing_page_lab.posthog" = ["static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: many-seed simulation tests"]
+
+[tool.ruff]
+line-length = 130
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B"]
+ignore = ["B905", "E501", "E702"]
