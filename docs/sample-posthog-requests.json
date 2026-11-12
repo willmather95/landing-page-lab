@@ -1,0 +1,92 @@
+[
+  {
+    "method": "GET",
+    "url": "https://us.posthog.com/api/projects/<PROJECT_ID>/feature_flags/?search=fieldnote-hero-test",
+    "headers": {
+      "Authorization": "<redacted>"
+    },
+    "note": "does the flag already exist?"
+  },
+  {
+    "method": "POST",
+    "url": "https://us.posthog.com/api/projects/<PROJECT_ID>/experiments/",
+    "headers": {
+      "Authorization": "<redacted>"
+    },
+    "json": {
+      "name": "fieldnote-hero-test: landing page test",
+      "description": "Created by landing-page-lab. Readout: Bayesian + group-sequential z-test.",
+      "feature_flag_key": "fieldnote-hero-test",
+      "type": "product",
+      "start_date": null,
+      "parameters": {
+        "feature_flag_variants": [
+          {
+            "key": "control",
+            "rollout_percentage": 34
+          },
+          {
+            "key": "b",
+            "rollout_percentage": 33
+          },
+          {
+            "key": "c",
+            "rollout_percentage": 33
+          }
+        ],
+        "minimum_detectable_effect": 20.0
+      },
+      "metrics": [
+        {
+          "kind": "ExperimentMetric",
+          "metric_type": "funnel",
+          "series": [
+            {
+              "kind": "EventsNode",
+              "event": "lpl_signup"
+            }
+          ]
+        }
+      ]
+    },
+    "note": "draft experiment, creates the linked multivariate flag"
+  },
+  {
+    "method": "PATCH",
+    "url": "https://us.posthog.com/api/projects/<PROJECT_ID>/feature_flags/0/",
+    "headers": {
+      "Authorization": "<redacted>"
+    },
+    "json": {
+      "filters": {
+        "groups": [
+          {
+            "properties": [],
+            "rollout_percentage": 100
+          }
+        ],
+        "multivariate": {
+          "variants": [
+            {
+              "key": "control",
+              "name": "a: outcome (control)",
+              "rollout_percentage": 34
+            },
+            {
+              "key": "b",
+              "name": "b: pain",
+              "rollout_percentage": 33
+            },
+            {
+              "key": "c",
+              "name": "c: proof",
+              "rollout_percentage": 33
+            }
+          ]
+        }
+      },
+      "ensure_experience_continuity": false
+    },
+    "note": "pin variant names and exact rollout on the experiment's flag"
+  }
+]
